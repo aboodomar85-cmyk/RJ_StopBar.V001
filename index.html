@@ -902,18 +902,18 @@ async function runLookup(){
     renderFullTable(stand,null);return;
   }
 
-  // ── 5. FAMILY MATCH ──
+  // ── 5. FAMILY MATCH — disabled: treat as excluded for all stands ──
   const fm=findFamilyMatch(stand,query);
   if(fm){
-    showResult(`${noFuelNote}<div class="light-card"><div class="light warn">${fm.letter}</div><div class="result-body"><p class="result-title"><span class="tag ${estClass}">${estTag}</span></p><p class="result-main">${tr('suggestedMain',fm.letter,standKey)}</p><p class="result-sub">${tr('familyMatchSub',fm.token)} <b>⚠️ ${LANG==='ar'?'يرجى التحقق مع عمليات المطار.':'Please verify with Airport Operations.'}</b></p>${acInfoHtml(isFleet,rawReg,aircraft,online)}</div></div>`);
-    renderFullTable(stand,fm.letter);return;
+    showResult(`${noFuelNote}<div class="light-card"><div class="light bad">✕</div><div class="result-body"><p class="result-title"><span class="tag blocked">${tr('tagBlocked')}</span></p><p class="result-main">${tr('excludedMain',standKey)}</p></div></div>`);
+    renderFullTable(stand,null);return;
   }
 
-  // ── 6. LAST RESORT: CODE ESTIMATE ──
+  // ── 6. LAST RESORT: CODE ESTIMATE — disabled: treat as excluded for all stands ──
   const est=estimateByCode(stand,query);
   if(est.status==='estimated'){
-    showResult(`${noFuelNote}<div class="light-card"><div class="light warn">${est.letter}</div><div class="result-body"><p class="result-title"><span class="tag ${estClass}">${estTag}</span></p><p class="result-main">${tr('suggestedMain',est.letter,standKey)}</p><p class="result-sub">${tr('estimatedSub',est.qCode)}</p>${acInfoHtml(isFleet,rawReg,aircraft,online)}</div></div>`);
-    renderFullTable(stand,est.letter);return;
+    showResult(`${noFuelNote}<div class="light-card"><div class="light bad">✕</div><div class="result-body"><p class="result-title"><span class="tag blocked">${tr('tagBlocked')}</span></p><p class="result-main">${tr('excludedMain',standKey)}</p></div></div>`);
+    renderFullTable(stand,null);return;
   }
 
   showResult(`${noFuelNote}<div class="notice danger">${tr('notRecognized')}</div>`);
